@@ -1,0 +1,18 @@
+body { font-family: 'Roboto', sans-serif; }
+.navbar-custom { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.navbar-size { width: 95%; margin: 0 auto; }
+.logo-icon { font-size: 2.5rem !important; margin-right: 10px; }
+
+.main-content {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: calc(100vh - 64px);
+  padding: 40px 0;
+}
+.hero-title { font-size: 3.5rem; font-weight: bold; color: #333; }
+
+/* Book Cards Styling */
+.book-card { border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: 0.3s; }
+.book-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+.card-image { height: 250px; }
+.card-image img { width: 100%; height: 100%; object-fit: cover; }
+.card-action { padding: 10px; text-align: center; }

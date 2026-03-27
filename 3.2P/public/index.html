@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIT725 Books Library</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar-custom">
+    <div class="nav-wrapper navbar-size">
+      <a href="#" class="brand-logo"><i class="material-icons left logo-icon">menu_book</i>Books Library</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#" class="modal-trigger btn-flat" data-target="bookModal"><i class="material-icons left">add</i>Add Book</a></li>
+        <li><a href="#" class="modal-trigger" data-target="demoModal">📋 Prac 3 Demo</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <div class="row hero-section center-align">
+        <h1 class="hero-title">SIT725 Books Collection</h1>
+        <p class="flow-text">Express Server + Materialize UI + REST API CRUD</p>
+      </div>
+
+      <!-- Dynamic Books Grid -->
+      <div class="row" id="books-grid"></div>
+    </div>
+  </main>
+
+  <!-- Add Book Modal -->
+  <div id="bookModal" class="modal">
+    <div class="modal-content">
+      <h4>Add New Book</h4>
+      <div class="row">
+        <div class="input-field col s12"><input id="bookTitle" type="text" required><label for="bookTitle">Title</label></div>
+        <div class="input-field col s12"><textarea id="bookDesc" class="materialize-textarea" required></textarea><label for="bookDesc">Description</label></div>
+        <div class="input-field col s12"><input id="bookImage" type="text" placeholder="images/gatsby.jpg"><label for="bookImage">Image Path</label></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <button class="waves-effect waves-light btn green" id="saveBookBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Prac 3 Demo Form Modal (Required for Assessment) -->
+  <div id="demoModal" class="modal">
+    <div class="modal-content">
+      <h4>Demo Form (Prints to Console)</h4>
+      <form id="demoForm">
+        <div class="row">
+          <div class="input-field col s6"><input id="firstName" type="text"><label for="firstName">First Name</label></div>
+          <div class="input-field col s6"><input id="lastName" type="text"><label for="lastName">Last Name</label></div>
+        </div>
+        <div class="row"><div class="input-field col s12"><input id="email" type="email"><label for="email">Email</label></div></div>
+        <button class="btn waves-effect waves-light blue" type="submit">Submit Demo</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/scripts.js"></script>
+</body>
+</html>
