@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Books Library — SIT725 Prac 4</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ═══════════ NAVBAR ═══════════ -->
+  <nav class="navbar-custom">
+    <div class="nav-wrapper navbar-size">
+      <a href="#" class="brand-logo">
+        <i class="material-icons logo-icon">auto_stories</i>Books Library
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><span class="nav-prac-badge">SIT725 Prac 4 — MongoDB</span></li>
+        <li>
+          <a href="#addBookModal" class="modal-trigger nav-add-btn waves-effect waves-light">
+            <i class="material-icons left">add</i>Add Book
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <div class="main-content">
+    <div class="container">
+
+      <!-- Hero Header -->
+      <div class="center-align" style="margin-bottom: 40px;">
+        <h2 class="hero-title">📚 Classic Books Collection</h2>
+        <p class="hero-subtitle">SIT725 Applied Software Engineering — Prac 4: Database Integration &amp; REST API</p>
+        <!-- Live Stats -->
+        <div class="hero-stats-row">
+          <span class="stat-chip"><i class="material-icons tiny">menu_book</i> Books: <strong id="statTotal">—</strong></span>
+          <span class="stat-chip"><i class="material-icons tiny">star</i> Avg Rating: <strong id="statRating">—</strong></span>
+          <span class="stat-chip"><i class="material-icons tiny">local_library</i> Genres: <strong id="statGenres">—</strong></span>
+        </div>
+      </div>
+
+      <!-- Search + Filter -->
+      <div class="search-filter-bar">
+        <div class="input-field search-field">
+          <i class="material-icons prefix">search</i>
+          <input type="text" id="searchInput" placeholder="Search title, author or genre…">
+        </div>
+        <select id="genreFilter" class="browser-default filter-select">
+          <option value="">All Genres</option>
+        </select>
+        <select id="sortSelect" class="browser-default filter-select">
+          <option value="title">Sort: A–Z</option>
+          <option value="rating">Sort: Top Rated</option>
+          <option value="year">Sort: Newest</option>
+        </select>
+      </div>
+
+      <!-- Books Grid -->
+      <div class="row" id="books-grid"></div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="center-align empty-state" style="display:none;">
+        <i class="material-icons large" style="color:#ccc;">auto_stories</i>
+        <h5>No books found</h5>
+        <p id="emptyMsg">Your library is empty. Add your first book!</p>
+        <a href="#addBookModal" class="modal-trigger btn waves-effect waves-light purple darken-2">Add Book</a>
+      </div>
+
+    </div><!-- /container -->
+  </div><!-- /main-content -->
+
+  <!-- ═══════════ ADD / EDIT MODAL ═══════════ -->
+  <div id="addBookModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4 id="modalHeading"><i class="material-icons left">menu_book</i>Add New Book</h4>
+      <input type="hidden" id="editId">
+
+      <div class="row">
+        <div class="input-field col s12 m6">
+          <input id="bookTitle" type="text">
+          <label for="bookTitle">Title <span class="red-text">*</span></label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input id="bookAuthor" type="text">
+          <label for="bookAuthor">Author <span class="red-text">*</span></label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12 m5">
+          <input id="bookGenre" type="text">
+          <label for="bookGenre">Genre</label>
+        </div>
+        <div class="input-field col s6 m4">
+          <input id="bookYear" type="number" min="1000" max="2100">
+          <label for="bookYear">Year Published</label>
+        </div>
+        <div class="input-field col s6 m3">
+          <input id="bookRating" type="number" min="0" max="5" step="0.1">
+          <label for="bookRating">Rating (0–5)</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="bookImage" type="text">
+          <label for="bookImage">Image URL</label>
+          <span class="helper-text">Paste any image URL or leave blank</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea id="bookDescription" class="materialize-textarea"></textarea>
+          <label for="bookDescription">Description <span class="red-text">*</span></label>
+        </div>
+      </div>
+
+      <!-- Error message -->
+      <div id="formError" class="form-error-box" style="display:none;">
+        <i class="material-icons tiny">error</i> <span id="formErrorMsg">Error</span>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+      <button id="saveBookBtn" class="btn waves-effect waves-light purple darken-2">
+        <i class="material-icons left">save</i><span id="saveBtnLabel">Save Book</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════ DELETE CONFIRM MODAL ═══════════ -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content center-align">
+      <i class="material-icons large red-text">delete_forever</i>
+      <h5>Delete Book?</h5>
+      <p>You are about to permanently delete <strong id="deleteBookName"></strong>.</p>
+      <input type="hidden" id="deleteId">
+    </div>
+    <div class="modal-footer center-align">
+      <a href="#!" class="modal-close waves-effect btn-flat">Cancel</a>
+      <button id="confirmDeleteBtn" class="btn waves-effect waves-light red darken-2">
+        <i class="material-icons left">delete</i>Delete
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════ DEMO FORM MODAL (Prac 3 preserved) ═══════════ -->
+  <div id="demoModal" class="modal">
+    <div class="modal-content">
+      <h4>Demo Form</h4>
+      <form id="demoForm">
+        <div class="input-field"><input id="firstName" type="text"><label for="firstName">First Name</label></div>
+        <div class="input-field"><input id="lastName" type="text"><label for="lastName">Last Name</label></div>
+        <div class="input-field"><input id="email" type="email"><label for="email">Email</label></div>
+        <button type="submit" class="btn purple darken-2">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- jQuery + Materialize -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/scripts.js"></script>
+</body>
+</html>
