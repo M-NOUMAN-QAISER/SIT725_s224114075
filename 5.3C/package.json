@@ -1,0 +1,14 @@
+{
+  "name": "books-catalog",
+  "version": "1.0.0",
+  "description": "SIT725 5.3C - Books Catalog using MVC + MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.6.3"
+  }
+}
