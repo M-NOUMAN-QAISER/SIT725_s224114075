@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Books Catalog</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+ 
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background-color: #f5f0eb;
+      color: #2c2c2c;
+      min-height: 100vh;
+    }
+ 
+    header {
+      background-color: #1a3c5e;
+      color: #fff;
+      padding: 24px 40px;
+    }
+ 
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+ 
+    header p {
+      margin-top: 4px;
+      font-size: 0.95rem;
+      opacity: 0.8;
+    }
+ 
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+ 
+    #status {
+      text-align: center;
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
+ 
+    #book-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+ 
+    .book-card {
+      background: #fff;
+      border-left: 5px solid #1a3c5e;
+      border-radius: 4px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+ 
+    .book-card:hover {
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+      transform: translateY(-2px);
+    }
+ 
+    .book-card h2 {
+      font-size: 1.2rem;
+      color: #1a3c5e;
+    }
+ 
+    .book-card .author {
+      font-size: 0.95rem;
+      color: #555;
+      margin-top: 4px;
+    }
+ 
+    .book-card .meta {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 6px;
+    }
+ 
+    .book-card .summary {
+      display: none;
+      font-size: 0.9rem;
+      color: #444;
+      margin-top: 12px;
+      line-height: 1.6;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+ 
+    .book-card.expanded .summary {
+      display: block;
+    }
+ 
+    .book-card .toggle-hint {
+      font-size: 0.78rem;
+      color: #aaa;
+      margin-top: 8px;
+    }
+ 
+    #error-msg {
+      color: #c0392b;
+      text-align: center;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+ 
+  <header>
+    <h1>📚 Books Catalog</h1>
+    <p>SIT725 — MVC Strategy Demo</p>
+  </header>
+ 
+  <main>
+    <p id="status">Loading books...</p>
+    <p id="error-msg"></p>
+    <ul id="book-list"></ul>
+  </main>
+ 
+  <script>
+    const bookList = document.getElementById('book-list');
+    const statusEl = document.getElementById('status');
+    const errorEl = document.getElementById('error-msg');
+ 
+    // Fetch all books on page load
+    fetch('/api/books')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch books from the server.');
+        }
+        return response.json();
+      })
+      .then(books => {
+        statusEl.textContent = `Showing ${books.length} books — click a card to read the summary.`;
+        renderBooks(books);
+      })
+      .catch(err => {
+        statusEl.textContent = '';
+        errorEl.textContent = 'Error: ' + err.message;
+      });
+ 
+    function renderBooks(books) {
+      bookList.innerHTML = '';
+      books.forEach(book => {
+        const li = document.createElement('li');
+        li.classList.add('book-card');
+        li.innerHTML = `
+          <h2>${book.title}</h2>
+          <p class="author">by ${book.author}</p>
+          <p class="meta">${book.year} &nbsp;|&nbsp; ${book.genre} &nbsp;|&nbsp; ID: ${book.id}</p>
+          <p class="summary">${book.summary}</p>
+          <p class="toggle-hint">▼ Click to expand</p>
+        `;
+        li.addEventListener('click', () => {
+          const isExpanded = li.classList.toggle('expanded');
+          li.querySelector('.toggle-hint').textContent = isExpanded
+            ? '▲ Click to collapse'
+            : '▼ Click to expand';
+        });
+        bookList.appendChild(li);
+      });
+    }
+  </script>
+ 
+</body>
+</html>
