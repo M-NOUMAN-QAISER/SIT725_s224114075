@@ -60,7 +60,7 @@ Acts as the intermediary between the Model and the View.
 ## Project Structure
 
 ```
-5.1P/
+5.2P/
 │
 ├── server.js                        # App entry point — sets up Express, mounts routes
 ├── package.json                     # Project metadata and dependencies
@@ -165,7 +165,7 @@ npm -v
 
 ```bash
 git clone <your-repo-url>
-cd books-catalog
+cd 5.2P
 ```
 
 2. **Install dependencies**

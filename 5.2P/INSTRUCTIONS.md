@@ -46,14 +46,14 @@ npm install
 1. Create a new folder and move into it:
 
 ```bash
-mkdir 5.1P
-cd 5.1P
+mkdir 5.2P
+cd 5.2P
 ```
 
 2. Copy all project files into the folder, maintaining this exact structure:
 
 ```
-5.1p/
+5.2P/
 ├── server.js
 ├── package.json
 ├── models/
